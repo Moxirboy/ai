@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Skin Condition Checker</title>
+</head>
+<body>
+    <h2>Skin Condition Checker</h2>
+    <form id="uploadForm">
+        Select image to upload:
+        <input type="file" name="file" id="file">
+        <input type="button" value="Upload Image" onclick="uploadImage()">
+    </form>
+    <div id="predictionResult"></div> <!-- Placeholder for the prediction result -->
+    
+    <script>
+        function uploadImage() {
+            const formData = new FormData(document.getElementById('uploadForm'));
+            fetch('http://127.0.0.1:5000/predict', {
+                method: 'POST',
+                body: formData,
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('predictionResult').innerText = `Prediction: ${data.condition}`;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('predictionResult').innerText = 'Error making prediction.';
+            });
+        }
+    </script>
+</body>
+</html>
